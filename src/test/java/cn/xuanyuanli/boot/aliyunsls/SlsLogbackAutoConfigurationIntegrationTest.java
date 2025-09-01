@@ -78,7 +78,7 @@ class SlsLogbackAutoConfigurationIntegrationTest {
     }
 
     @Test
-    void testAutoConfigurationWithEmptyEndpointFailsValidation() {
+    void testAutoConfigurationWithEmptyEndpointSucceeds() {
         contextRunner
                 .withPropertyValues(
                         "aliyun.sls.endpoint=",
@@ -89,8 +89,9 @@ class SlsLogbackAutoConfigurationIntegrationTest {
                         "spring.application.name=test-app"
                 )
                 .run(context -> {
-                    // @ConditionalOnProperty默认会激活，但是验证会失败导致启动错误
-                    assertThat(context).hasFailed();
+                    // 没有Bean Validation，配置会正常加载，验证在运行时进行
+                    assertThat(context).hasSingleBean(SlsLogbackConfiguration.class);
+                    assertThat(context).hasSingleBean(SlsLogbackProperties.class);
                 });
     }
 
