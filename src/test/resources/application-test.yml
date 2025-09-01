@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: sls-logback-test-app
+
+aliyun:
+  sls:
+    endpoint: https://cn-hangzhou.log.aliyuncs.com
+    access-key-id: test-access-key-id
+    access-key-secret: test-access-key-secret
+    project: test-project
+    log-store: test-logstore
+    topic: test-topic
+
+logging:
+  level:
+    cn.xuanyuanli.boot.aliyunsls: DEBUG

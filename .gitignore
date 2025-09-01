@@ -1,0 +1,35 @@
+# compile file
+*.class
+target/
+_temp_/
+
+# log file
+*.log
+
+*.tmp
+logs/
+
+# Eclipse&IDEA project files
+.classpath
+.project
+.settings/
+.externalToolBuilders/
+tomcat.*/
+*.iml
+.idea/
+.vscode/
+
+# Package Files #
+*.war
+*.ear
+
+# Other
+
+
+*.MF
+*.bak
+.DS_Store
+/bin
+*.swp
+.springBeans
+cwebp_tmp/
