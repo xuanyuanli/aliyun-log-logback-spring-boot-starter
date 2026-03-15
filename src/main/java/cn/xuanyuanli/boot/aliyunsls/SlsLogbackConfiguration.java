@@ -94,6 +94,12 @@ public class SlsLogbackConfiguration {
         appender.setProject(slsLogbackProperties.getProject());
         appender.setLogStore(slsLogbackProperties.getLogStore());
         appender.setTopic(getFinalTopic());
+        
+        // 设置 MDC 字段（作为 SLS 独立索引字段上报）
+        if (StringUtils.hasText(slsLogbackProperties.getMdcFields())) {
+            appender.setMdcFields(slsLogbackProperties.getMdcFields());
+        }
+        
         appender.setContext(loggerContext);
         appender.start();
         return appender;

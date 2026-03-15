@@ -42,4 +42,10 @@ public class SlsLogbackProperties {
      */
     private String topic;
 
+    /**
+     * 需要作为 SLS 独立字段上报的 MDC 字段名，逗号分隔
+     * 例如：traceId,canary,canaryMode,canaryValue
+     */
+    private String mdcFields;
+
 }
