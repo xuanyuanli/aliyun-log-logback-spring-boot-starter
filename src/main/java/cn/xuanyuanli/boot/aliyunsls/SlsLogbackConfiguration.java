@@ -94,12 +94,63 @@ public class SlsLogbackConfiguration {
         appender.setProject(slsLogbackProperties.getProject());
         appender.setLogStore(slsLogbackProperties.getLogStore());
         appender.setTopic(getFinalTopic());
-        
+
         // 设置 MDC 字段（作为 SLS 独立索引字段上报）
         if (StringUtils.hasText(slsLogbackProperties.getMdcFields())) {
             appender.setMdcFields(slsLogbackProperties.getMdcFields());
         }
-        
+
+        // 设置日志来源
+        if (StringUtils.hasText(slsLogbackProperties.getSource())) {
+            appender.setSource(slsLogbackProperties.getSource());
+        }
+
+        // 设置时间格式和时区
+        if (StringUtils.hasText(slsLogbackProperties.getTimeFormat())) {
+            appender.setTimeFormat(slsLogbackProperties.getTimeFormat());
+        }
+        if (StringUtils.hasText(slsLogbackProperties.getTimeZone())) {
+            appender.setTimeZone(slsLogbackProperties.getTimeZone());
+        }
+
+        // 设置是否包含 Location 字段
+        if (slsLogbackProperties.getIncludeLocation() != null) {
+            appender.setIncludeLocation(slsLogbackProperties.getIncludeLocation());
+        }
+
+        // 设置异常堆栈最大长度
+        if (slsLogbackProperties.getMaxThrowable() != null) {
+            appender.setMaxThrowable(slsLogbackProperties.getMaxThrowable());
+        }
+
+        // 设置时间精度
+        if (StringUtils.hasText(slsLogbackProperties.getTimePrecision())) {
+            appender.setTimePrecision(slsLogbackProperties.getTimePrecision());
+        }
+
+        // 设置性能调优参数
+        if (slsLogbackProperties.getTotalSizeInBytes() != null) {
+            appender.setTotalSizeInBytes(slsLogbackProperties.getTotalSizeInBytes());
+        }
+        if (slsLogbackProperties.getMaxBlockMs() != null) {
+            appender.setMaxBlockMs(slsLogbackProperties.getMaxBlockMs());
+        }
+        if (slsLogbackProperties.getIoThreadCount() != null) {
+            appender.setIoThreadCount(slsLogbackProperties.getIoThreadCount());
+        }
+        if (slsLogbackProperties.getBatchSizeThresholdInBytes() != null) {
+            appender.setBatchSizeThresholdInBytes(slsLogbackProperties.getBatchSizeThresholdInBytes());
+        }
+        if (slsLogbackProperties.getBatchCountThreshold() != null) {
+            appender.setBatchCountThreshold(slsLogbackProperties.getBatchCountThreshold());
+        }
+        if (slsLogbackProperties.getLingerMs() != null) {
+            appender.setLingerMs(slsLogbackProperties.getLingerMs());
+        }
+        if (slsLogbackProperties.getRetries() != null) {
+            appender.setRetries(slsLogbackProperties.getRetries());
+        }
+
         appender.setContext(loggerContext);
         appender.start();
         return appender;

@@ -10,6 +10,21 @@ aliyun:
     project: test-project
     log-store: test-logstore
     topic: test-topic
+    # 日志来源与格式配置
+    source: test-source
+    time-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    include-location: false
+    max-throwable: 1000
+    time-precision: ms
+    # 性能调优配置
+    total-size-in-bytes: 209715200
+    max-block-ms: 0
+    io-thread-count: 4
+    batch-size-threshold-in-bytes: 1048576
+    batch-count-threshold: 2048
+    linger-ms: 1000
+    retries: 5
 
 logging:
   level:

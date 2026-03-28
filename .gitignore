@@ -33,3 +33,4 @@ tomcat.*/
 *.swp
 .springBeans
 cwebp_tmp/
+.qoder/

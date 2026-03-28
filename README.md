@@ -38,12 +38,31 @@ spring:
 
 aliyun:
   sls:
+    # 基础配置（必需）
     endpoint: https://cn-hangzhou.log.aliyuncs.com  # SLS服务端点
     access-key-id: ${ALIYUN_ACCESS_KEY_ID}          # 阿里云AccessKey ID
     access-key-secret: ${ALIYUN_ACCESS_KEY_SECRET}  # 阿里云AccessKey Secret
     project: my-sls-project                         # SLS项目名称
     log-store: my-logstore                          # SLS日志库名称
     topic: my-topic                                 # 可选：日志主题，默认使用应用名称
+    mdc-fields: traceId,spanId                      # 可选：MDC字段上报
+
+    # 日志格式配置（可选）
+    source: my-server-01                            # 日志来源标识
+    time-format: yyyy-MM-dd HH:mm:ss                # 时间格式
+    time-zone: Asia/Shanghai                        # 时区（东八区）
+    include-location: false                         # 不包含代码位置（提升性能）
+    max-throwable: 1000                             # 异常堆栈最大长度
+    time-precision: ms                              # 毫秒级时间精度
+
+    # 性能调优配置（可选）
+    total-size-in-bytes: 209715200                  # 缓存大小200MB
+    max-block-ms: 0                                 # 不阻塞日志线程
+    io-thread-count: 4                              # IO线程数
+    batch-size-threshold-in-bytes: 1048576          # 批量大小1MB
+    batch-count-threshold: 2048                     # 批量条数
+    linger-ms: 1000                                 # 逗留时间1秒
+    retries: 5                                      # 重试次数
 ```
 
 或使用 `application.properties`：
@@ -51,12 +70,31 @@ aliyun:
 ```properties
 spring.application.name=my-application
 
+# 基础配置
 aliyun.sls.endpoint=https://cn-hangzhou.log.aliyuncs.com
 aliyun.sls.access-key-id=${ALIYUN_ACCESS_KEY_ID}
 aliyun.sls.access-key-secret=${ALIYUN_ACCESS_KEY_SECRET}
 aliyun.sls.project=my-sls-project
 aliyun.sls.log-store=my-logstore
 aliyun.sls.topic=my-topic
+aliyun.sls.mdc-fields=traceId,spanId
+
+# 日志格式配置
+aliyun.sls.source=my-server-01
+aliyun.sls.time-format=yyyy-MM-dd HH:mm:ss
+aliyun.sls.time-zone=Asia/Shanghai
+aliyun.sls.include-location=false
+aliyun.sls.max-throwable=1000
+aliyun.sls.time-precision=ms
+
+# 性能调优配置
+aliyun.sls.total-size-in-bytes=209715200
+aliyun.sls.max-block-ms=0
+aliyun.sls.io-thread-count=4
+aliyun.sls.batch-size-threshold-in-bytes=1048576
+aliyun.sls.batch-count-threshold=2048
+aliyun.sls.linger-ms=1000
+aliyun.sls.retries=5
 ```
 
 ### 3. 使用日志
@@ -78,6 +116,8 @@ public class HelloController {
 
 ## 配置参数说明
 
+### 基础配置（必需）
+
 | 参数 | 必需 | 说明 | 示例 |
 |------|------|------|------|
 | `aliyun.sls.endpoint` | ✅ | SLS服务端点 | `https://cn-hangzhou.log.aliyuncs.com` |
@@ -85,7 +125,31 @@ public class HelloController {
 | `aliyun.sls.access-key-secret` | ✅ | 阿里云访问密钥Secret | `xxx***` |
 | `aliyun.sls.project` | ✅ | SLS项目名称 | `my-project` |
 | `aliyun.sls.log-store` | ✅ | SLS日志库名称 | `my-logstore` |
-| `aliyun.sls.topic` | ❌ | 日志主题，默认使用应用名称 | `my-topic` |
+| `aliyun.sls.topic` | ❌ | 日志主题，默认使用 `spring.application.name` | `my-topic` |
+| `aliyun.sls.mdc-fields` | ❌ | MDC字段上报配置，逗号分隔 | `traceId,spanId` |
+
+### 日志格式配置（可选）
+
+| 参数 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `aliyun.sls.source` | String | 宿主机IP | 日志来源标识 |
+| `aliyun.sls.time-format` | String | `yyyy-MM-dd'T'HH:mmZ` | 时间字段格式 |
+| `aliyun.sls.time-zone` | String | `UTC` | 时区，如 `Asia/Shanghai` |
+| `aliyun.sls.include-location` | Boolean | `true` | 是否包含代码位置（设为false可提升性能） |
+| `aliyun.sls.max-throwable` | Integer | `500` | 异常堆栈最大记录长度 |
+| `aliyun.sls.time-precision` | String | `s` | 时间精度，`s`(秒) 或 `ms`(毫秒) |
+
+### 性能调优配置（可选）
+
+| 参数 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `aliyun.sls.total-size-in-bytes` | Integer | `104857600` | 缓存大小上限（字节），默认100MB |
+| `aliyun.sls.max-block-ms` | Integer | `60000` | 阻塞时间（毫秒），建议设为0避免阻塞 |
+| `aliyun.sls.io-thread-count` | Integer | CPU核数 | IO线程池大小 |
+| `aliyun.sls.batch-size-threshold-in-bytes` | Integer | `524288` | 批量发送大小阈值（字节），默认512KB |
+| `aliyun.sls.batch-count-threshold` | Integer | `4096` | 批量发送条数阈值 |
+| `aliyun.sls.linger-ms` | Integer | `2000` | 批量发送逗留时间（毫秒） |
+| `aliyun.sls.retries` | Integer | `10` | 发送失败重试次数 |
 
 ## 安全配置建议
 

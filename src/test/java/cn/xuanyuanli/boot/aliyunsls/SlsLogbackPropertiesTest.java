@@ -39,6 +39,42 @@ class SlsLogbackPropertiesTest {
     }
 
     @Test
+    void testSetAndGetExtendedProperties() {
+        // 设置扩展属性 - 日志来源与格式
+        properties.setSource("192.168.1.1");
+        properties.setTimeFormat("yyyy-MM-dd HH:mm:ss");
+        properties.setTimeZone("Asia/Shanghai");
+        properties.setIncludeLocation(false);
+        properties.setMaxThrowable(1000);
+        properties.setTimePrecision("ms");
+
+        // 设置扩展属性 - 性能调优
+        properties.setTotalSizeInBytes(209715200);
+        properties.setMaxBlockMs(0);
+        properties.setIoThreadCount(4);
+        properties.setBatchSizeThresholdInBytes(1048576);
+        properties.setBatchCountThreshold(2048);
+        properties.setLingerMs(1000);
+        properties.setRetries(5);
+
+        // 验证扩展属性
+        assertEquals("192.168.1.1", properties.getSource());
+        assertEquals("yyyy-MM-dd HH:mm:ss", properties.getTimeFormat());
+        assertEquals("Asia/Shanghai", properties.getTimeZone());
+        assertEquals(false, properties.getIncludeLocation());
+        assertEquals(1000, properties.getMaxThrowable());
+        assertEquals("ms", properties.getTimePrecision());
+
+        assertEquals(209715200, properties.getTotalSizeInBytes());
+        assertEquals(0, properties.getMaxBlockMs());
+        assertEquals(4, properties.getIoThreadCount());
+        assertEquals(1048576, properties.getBatchSizeThresholdInBytes());
+        assertEquals(2048, properties.getBatchCountThreshold());
+        assertEquals(1000, properties.getLingerMs());
+        assertEquals(5, properties.getRetries());
+    }
+
+    @Test
     void testDefaultValues() {
         // 验证所有属性的默认值都是null
         assertNull(properties.getEndpoint());
@@ -47,6 +83,22 @@ class SlsLogbackPropertiesTest {
         assertNull(properties.getProject());
         assertNull(properties.getLogStore());
         assertNull(properties.getTopic());
+
+        // 验证扩展属性的默认值都是null
+        assertNull(properties.getSource());
+        assertNull(properties.getTimeFormat());
+        assertNull(properties.getTimeZone());
+        assertNull(properties.getIncludeLocation());
+        assertNull(properties.getMaxThrowable());
+        assertNull(properties.getTimePrecision());
+
+        assertNull(properties.getTotalSizeInBytes());
+        assertNull(properties.getMaxBlockMs());
+        assertNull(properties.getIoThreadCount());
+        assertNull(properties.getBatchSizeThresholdInBytes());
+        assertNull(properties.getBatchCountThreshold());
+        assertNull(properties.getLingerMs());
+        assertNull(properties.getRetries());
     }
 
     @Test
